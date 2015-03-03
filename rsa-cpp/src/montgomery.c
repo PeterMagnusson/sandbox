@@ -1,4 +1,5 @@
 
+/*
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -64,3 +65,4 @@ void test_montgomery() {
 	test_montgomery_a_b_m(TEST_CONSTANT_PRIME_31_1, 17,
 			TEST_CONSTANT_PRIME_15_1);
 }
+*/

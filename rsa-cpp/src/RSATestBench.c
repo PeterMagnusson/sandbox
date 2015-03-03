@@ -26,7 +26,8 @@
 
 
 int main(void) {
-	test_montgomery();
+	//test_montgomery();
+	montgomery_array_tests();
 //	test_square();
 	/*
 	 uint32_t p_length = 1;

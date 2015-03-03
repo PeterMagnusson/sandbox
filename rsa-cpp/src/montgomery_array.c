@@ -1,41 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void mont_prod_array(int length, uint32_t *A, uint32_t *B, uint32_t *M,
-		uint32_t *temp, uint32_t *s) {
-	zero_array(length, s);
-	for (int wordIndex = length - 1; wordIndex >= 0; wordIndex--) {
-		for (int i = 0; i < 32; i++) {
-
-			int b = (B[wordIndex] >> i) & 1;
-
-			//q = (s - b * A) & 1;
-			sub_array(length, s, A, temp);
-			int q;
-			if (b == 1) {
-				q = temp[length - 1] & 1;
-			} else {
-				q = s[length - 1] & 1;
-			}
-
-			// s = (s + q*M + b*A) >>> 1;
-			if (q == 1) {
-				add_array(length, s, M, s);
-			} else {
-				//TODO possibly do some sub operation to temporary here just to force constant execution time.
-			}
-
-			if (b == 1) {
-				add_array(length, s, A, s);
-			} else {
-				//TODO possibly do some sub operation to temporary here just to force constant execution time.
-			}
-
-			shift_right_1_array(length, s, s);
-		}
-	}
-}
-
 void copy_array(int length, int *src, int *dst) {
 	for (int i = 0; i < length; i++)
 		dst[i] = src[i];
@@ -131,5 +96,40 @@ int greater_than_array(int length, uint32_t *a, uint32_t *b) {
 			return 1;
 	}
 	return 0;
+}
+
+void mont_prod_array(int length, uint32_t *A, uint32_t *B, uint32_t *M,
+		uint32_t *temp, uint32_t *s) {
+	zero_array(length, s);
+	for (int wordIndex = length - 1; wordIndex >= 0; wordIndex--) {
+		for (int i = 0; i < 32; i++) {
+
+			int b = (B[wordIndex] >> i) & 1;
+
+			//q = (s - b * A) & 1;
+			sub_array(length, s, A, temp);
+			int q;
+			if (b == 1) {
+				q = temp[length - 1] & 1;
+			} else {
+				q = s[length - 1] & 1;
+			}
+
+			// s = (s + q*M + b*A) >>> 1;
+			if (q == 1) {
+				add_array(length, s, M, s);
+			} else {
+				//TODO possibly do some sub operation to temporary here just to force constant execution time.
+			}
+
+			if (b == 1) {
+				add_array(length, s, A, s);
+			} else {
+				//TODO possibly do some sub operation to temporary here just to force constant execution time.
+			}
+
+			shift_right_1_array(length, s, s);
+		}
+	}
 }
 

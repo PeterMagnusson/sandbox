@@ -7,11 +7,11 @@ void copy_array(int length, int *src, int *dst) {
 }
 
 void add_array(int length, uint32_t *a, uint32_t b[], uint32_t result[]) {
-	int carry = 0;
+	uint32_t carry = 0;
 	for (int i = length - 1; i >= 0; i--) {
 		int r = carry;
-		int aa = a[i];
-		int bb = b[i];
+		uint32_t aa = a[i];
+		uint32_t bb = b[i];
 		r += aa;
 		r += bb;
 		result[i] = r;
@@ -20,7 +20,7 @@ void add_array(int length, uint32_t *a, uint32_t b[], uint32_t result[]) {
 }
 
 void sub_array(int length, uint32_t *a, uint32_t *b, uint32_t *result) {
-	int carry = 1;
+	uint32_t carry = 1;
 	for (int wordIndex = length - 1; wordIndex >= 0; wordIndex--) {
 		int r = carry;
 		uint32_t aa = a[wordIndex];
@@ -35,7 +35,7 @@ void sub_array(int length, uint32_t *a, uint32_t *b, uint32_t *result) {
 void shift_right_1_array(int length, uint32_t *a, uint32_t *result) {
 	int prev = 0; // MSB will be zero extended
 	for (int wordIndex = 0; wordIndex < length; wordIndex++) {
-		int aa = a[wordIndex];
+		uint32_t aa = a[wordIndex];
 		result[wordIndex] = (aa >> 1) | (prev << 31);
 		prev = aa & 1; // Lower word will be extended with LSB of this word
 	}
@@ -44,7 +44,7 @@ void shift_right_1_array(int length, uint32_t *a, uint32_t *result) {
 void shift_left_1_array(int length, uint32_t *a, uint32_t *result) {
 	int prev = 0; // LSB will be zero extended
 	for (int wordIndex = length - 1; wordIndex >= 0; wordIndex--) {
-		int aa = a[wordIndex];
+		uint32_t aa = a[wordIndex];
 		result[wordIndex] = (aa << 1) | prev;
 
 		// Higher word will be extended with MSB of this word

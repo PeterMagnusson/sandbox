@@ -6,7 +6,7 @@ void copy_array(int length, int *src, int *dst) {
 		dst[i] = src[i];
 }
 
-void add_array(int length, uint32_t *a, uint32_t b[], uint32_t result[]) {
+void add_array(int length, uint32_t *a, uint32_t *b, uint32_t *result) {
 	uint32_t carry = 0;
 	for (int i = length - 1; i >= 0; i--) {
 		int r = carry;

@@ -63,19 +63,17 @@ void m_residue(int length, uint32_t *a, uint32_t *modulus, uint32_t *residue) {
 */
 
 /*
-void modulus_array(int length, uint32_t *a, uint32_t *modulus,
+void modulus_array(int length, uint32_t *a, uint32_t *modulus, uint32_t *temp,
 		uint32_t *reminder) {
-	 int tmp[] = new int[length];
-	 int tmp2[] = new int[length];
 	 copy_array(length, a, reminder);
 
 	 while (!greater_than_array(length, modulus, reminder)) {
-	 copy_array(length, modulus, tmp);
-	 zero_array(length, tmp2);
 
-	 while (!greater_than_array(length, tmp, reminder)) {
-	 copy_array(length, tmp, tmp2);
-	 shift_left_1_array(length, tmp, tmp);
+	 copy_array(length, modulus, temp);
+
+	 while (temp[0] & 0x8000_0000 = 0 & !greater_than_array(length, temp, reminder)) {
+	 sub_array(length, a, temp );
+	 shift_left_1_array(length, tmp);
 	 }
 
 	 sub_array(length, reminder, tmp2, reminder);
@@ -130,6 +128,37 @@ void mont_prod_array(int length, uint32_t *A, uint32_t *B, uint32_t *M,
 
 			shift_right_1_array(length, s, s);
 		}
+	}
+}
+
+void mont_exp_array(int length, uint32_t *X, uint32_t E, uint32_t *M,
+		uint32_t *Nr, uint32_t *P, uint32_t ONE, uint32_t *Z) {
+	//1.
+	//TODO implement calculating Nr = m_residue 2**(2N)
+
+	//2.
+	zero_array(length, ONE);
+	ONE[length - 1] = 1;
+	mont_prod_array(length, ONE, Nr, M);
+
+	//3
+	mont_prod_array(length, X, Nr, M);
+
+	//4
+	for (int word_index = length - 1; word_index > 0; word_index++) {
+		for (int i = 0; i < 32; i++) {
+			uint32_t ei = (E[word_index] >> i) & 1;
+			//6
+			if (ei == 1) {
+				mont_prod_array(length, Z, P, M, Z);
+			}
+			//5
+			mont_prod_array(length, P, P, M, P);
+			//7
+		}
+		//8
+		mont_prod_array(length, ONE, Z, M);
+		//9
 	}
 }
 

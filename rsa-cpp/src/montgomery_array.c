@@ -8,28 +8,28 @@ void copy_array(int length, uint32_t *src, uint32_t *dst) {
 }
 
 void add_array(int length, uint32_t *a, uint32_t *b, uint32_t *result) {
-	uint32_t carry = 0;
+	uint64_t carry = 0;
 	for (int i = length - 1; i >= 0; i--) {
-		uint32_t r = carry;
+		uint64_t r = carry;
 		uint32_t aa = a[i];
 		uint32_t bb = b[i];
-		r += aa;
-		r += bb;
-		result[i] = r;
-		carry = ((aa >> 31) | (bb >> 31)) & ~(r >> 31);
+		r += aa & 0xFFFFFFFFul;
+		r += bb & 0xFFFFFFFFul;
+		carry = r>>32;
+		result[i] = (uint32_t) r;
 	}
 }
 
 void sub_array(int length, uint32_t *a, uint32_t *b, uint32_t *result) {
-	uint32_t carry = 1;
+	uint64_t carry = 1;
 	for (int wordIndex = length - 1; wordIndex >= 0; wordIndex--) {
-		uint32_t r = carry;
+		uint64_t r = carry;
 		uint32_t aa = a[wordIndex];
 		uint32_t bb = ~b[wordIndex];
-		r += aa;
-		r += bb;
-		result[wordIndex] = r;
-		carry = ((aa >> 31) | (bb >> 31)) & ~(r >> 31);
+		r += aa & 0xFFFFFFFFul;
+		r += bb & 0xFFFFFFFFul;
+		carry = r>>32;
+		result[wordIndex] = (uint32_t) r;
 	}
 }
 

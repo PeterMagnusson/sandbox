@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "montgomery_array.h"
 
 void copy_array(int length, int *src, int *dst) {
 	for (int i = 0; i < length; i++)
@@ -131,10 +132,18 @@ void mont_prod_array(int length, uint32_t *A, uint32_t *B, uint32_t *M,
 	}
 }
 
+void m_residue_2_2N_array(int length, uint32_t *M, uint32_t *Nr) {
+	zero_array(length, Nr);
+	Nr[0] = 0x80000000;
+	//Nr initilized to 2 ** N-1
+}
+
+/*
 void mont_exp_array(int length, uint32_t *X, uint32_t E, uint32_t *M,
-		uint32_t *Nr, uint32_t *P, uint32_t ONE, uint32_t *Z) {
+		uint32_t *Nr, uint32_t *P, uint32_t *ONE, uint32_t *Z) {
 	//1.
 	//TODO implement calculating Nr = m_residue 2**(2N)
+	m_residue_2_2N_array(length, M, Nr);
 
 	//2.
 	zero_array(length, ONE);
@@ -161,4 +170,4 @@ void mont_exp_array(int length, uint32_t *X, uint32_t E, uint32_t *M,
 		//9
 	}
 }
-
+*/

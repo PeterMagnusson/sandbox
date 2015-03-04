@@ -25,7 +25,7 @@ public class TestDivision {
 
 	@Test
 	public void test() {
-		for (int n = 2; n < 16; n++)
+		for (int n = 2; n < 13; n++)
 			for (int D = 2; D <= (1 << n) - 1; D++)
 				for (int N = 1; N <= (1 << n) - 1; N++) {
 					int reminder = div(N, D, n);

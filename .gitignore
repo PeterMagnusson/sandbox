@@ -14,12 +14,5 @@ rsa-cpp/.cproject
 
 rsa-cpp/.project
 
-rsa-cpp/Debug/makefile
-
-rsa-cpp/Debug/objects.mk
-
 rsa-cpp/Debug/RSATestBench
 
-rsa-cpp/Debug/sources.mk
-
-rsa-cpp/Debug/src/subdir.mk

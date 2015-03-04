@@ -13,6 +13,8 @@ void sub_array(int length, uint32_t *a, uint32_t *b, uint32_t *result);
 void shift_right_1_array(int length, uint32_t *a, uint32_t *result);
 void mont_prod_array(int length, uint32_t *A, uint32_t *B, uint32_t *M,
 		uint32_t *temp, uint32_t *s);
+void modulus_array(int length, uint32_t *a, uint32_t *modulus, uint32_t *temp,
+		uint32_t *reminder);
 
 
 #endif /* MONTGOMERY_ARRAY_H_ */

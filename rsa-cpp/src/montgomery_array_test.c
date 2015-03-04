@@ -44,9 +44,26 @@ void testSub() {
 	uint32_t a[] = { 0x01234567, 0x89abcdef };
 	uint32_t b[] = { 0x00200000, 0x8a001001 };
 	uint32_t c[2];
+
 	sub_array(2, a, b, c);
-	uint32_t expected[] = { 0x1034566, 0xffabbdee };
-	assertArrayEquals(2, expected, c);
+	uint32_t expected1[] = { 0x1034566, 0xffabbdee };
+	assertArrayEquals(2, expected1, c);
+
+	sub_array(2, b, a, c);
+	uint32_t expected2[] = { 0xfefcba99u, 0x00544212u };
+	assertArrayEquals(2, expected2, c);
+
+	uint32_t aa[] = { 0, 0x01234567, 0x89abcdef };
+	uint32_t bb[] = { 0, 0x00200000, 0x8a001001 };
+	uint32_t cc[3];
+
+	sub_array(3, aa, bb, cc);
+	uint32_t expected3[] = { 0, 0x1034566, 0xffabbdee };
+	assertArrayEquals(2, expected3, cc);
+
+	sub_array(3, bb, aa, cc);
+	uint32_t expected4[] = { 0xffffffff, 0xfefcba99u, 0x00544212u };
+	assertArrayEquals(3, expected4, cc);
 }
 
 int m_residue(int A, int M) {
@@ -79,21 +96,21 @@ int test_montgomery_a_b_m(int A, int B, int M) {
 	return success;
 }
 
-/*
- @Test public void modulus() {
- int[] A = { 0, (1<<(61-32)) - 1, 0xffff_ffff }; //2^61-1 Ivan Mikheevich Pervushin
- int[] B = { (1<<(89-64)) - 1,  0xffff_ffff, 0xffff_ffff }; //2^89-1 R. E. Powers
- int[] M = { 0, 0, (1<<31)-1 }; //Leonhard Euler
- int[] actual1 = new int[3];
- int[] actual2 = new int[3];
- MontgomeryArray.modulus_array(3, A, M, actual1);
- MontgomeryArray.modulus_array(3, B, M, actual2);
- int[] expected1 = {0, 0, 1073741823};
- int[] expected2 = {0, 0, 134217727};
- assertArrayEquals(expected1, actual1);
- assertArrayEquals(expected2, actual2);
- }
- */
+void test_montgomery_modulus() {
+	printf("=== Test mod ===\n");
+	uint32_t A[] = { 0, (1 << (61 - 32)) - 1, 0xffffffff }; //2^61-1 Ivan Mikheevich Pervushin
+	uint32_t B[] = { (1 << (89 - 64)) - 1, 0xffffffff, 0xffffffff }; //2^89-1 R. E. Powers
+	uint32_t M[] = { 0, 0, (1 << 31) - 1 }; //Leonhard Euler
+	uint32_t temp[3];
+	uint32_t actual1[3];
+	uint32_t actual2[3];
+	modulus_array(3, A, M, temp, actual1);
+	modulus_array(3, B, M, temp, actual2);
+	uint32_t expected1[] = { 0, 0, 1073741823 };
+	uint32_t expected2[] = { 0, 0, 134217727 };
+	assertArrayEquals(3, expected1, actual1);
+	assertArrayEquals(3, expected2, actual2);
+}
 
 /*
  @Test
@@ -148,6 +165,7 @@ void montgomery_array_tests() {
 	testShiftRight();
 	testAdd();
 	testSub();
+	test_montgomery_modulus();
 	test_montgomery_one_item_array();
 
 }

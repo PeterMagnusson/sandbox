@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "montgomery_array.h"
 
-void copy_array(int length, int *src, int *dst) {
+void copy_array(int length, uint32_t *src, uint32_t *dst) {
 	for (int i = 0; i < length; i++)
 		dst[i] = src[i];
 }
@@ -23,7 +23,7 @@ void add_array(int length, uint32_t *a, uint32_t *b, uint32_t *result) {
 void sub_array(int length, uint32_t *a, uint32_t *b, uint32_t *result) {
 	uint32_t carry = 1;
 	for (int wordIndex = length - 1; wordIndex >= 0; wordIndex--) {
-		int r = carry;
+		uint32_t r = carry;
 		uint32_t aa = a[wordIndex];
 		uint32_t bb = ~b[wordIndex];
 		r += aa;
@@ -54,18 +54,27 @@ void shift_left_1_array(int length, uint32_t *a, uint32_t *result) {
 }
 
 /*
-void m_residue(int length, uint32_t *a, uint32_t *modulus, uint32_t *residue) {
-	modulus_array(length, a, modulus, residue);
-	for (int i = 0; i < 32; i++) {
-		shift_left_1_array(length, residue, residue);
-		modulus_array(length, residue, modulus, residue);
-	}
-}
-*/
+ void m_residue(int length, uint32_t *a, uint32_t *modulus, uint32_t *residue) {
+ modulus_array(length, a, modulus, residue);
+ for (int i = 0; i < 32; i++) {
+ shift_left_1_array(length, residue, residue);
+ modulus_array(length, residue, modulus, residue);
+ }
+ }
+ */
 
-/*
 void modulus_array(int length, uint32_t *a, uint32_t *modulus, uint32_t *temp,
 		uint32_t *reminder) {
+
+	copy_array(length, a, temp); //long P = N;
+	copy_array(length, a, reminder); //long T = N;
+	while ((temp[0] & 0x80000000) == 0) { //while(P>=0) {
+		copy_array(length, temp, reminder); //T = P;
+		sub_array(length, temp, modulus, temp); //P -= D;
+	}
+	//return T;
+
+	/*
 	 copy_array(length, a, reminder);
 
 	 while (!greater_than_array(length, modulus, reminder)) {
@@ -80,8 +89,8 @@ void modulus_array(int length, uint32_t *a, uint32_t *modulus, uint32_t *temp,
 	 sub_array(length, reminder, tmp2, reminder);
 
 	 }
-}
 	 */
+}
 
 void zero_array(int length, uint32_t *a) {
 	for (int i = 0; i < length; i++)
@@ -132,17 +141,23 @@ void mont_prod_array(int length, uint32_t *A, uint32_t *B, uint32_t *M,
 	}
 }
 
-void m_residue_2_2N_array(int length, uint32_t *M, uint32_t *Nr) {
+void m_residue_2_2N_array(int length, uint32_t *M, uint32_t *temp, uint32_t *Nr) {
 	zero_array(length, Nr);
-	Nr[0] = 0x80000000;
-	//Nr initilized to 2 ** N-1
+	Nr[0] = 0x40000000; //Nr  = 2 ** N-2
+	modulus_array(length, Nr, M, temp, Nr); //Nr = (2 ** N-2) mod M
+	int N = 32 * length;
+	for (int i = 0; i < (N) + 2; i++) {
+		shift_left_1_array(length, Nr, Nr);
+		modulus_array(length, Nr, M, temp, Nr);
+	}
+	//Nr = (2 ** 2N) mod M
 }
 
 void mont_exp_array(int length, uint32_t *X, uint32_t *E, uint32_t *M,
 		uint32_t *Nr, uint32_t *P, uint32_t *ONE, uint32_t *temp, uint32_t *Z) {
 	//1.
 	//TODO implement calculating Nr = m_residue 2**(2N)
-	m_residue_2_2N_array(length, M, Nr);
+	m_residue_2_2N_array(length, M, temp, Nr);
 
 	//2.
 	zero_array(length, ONE);

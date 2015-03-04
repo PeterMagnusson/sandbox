@@ -138,9 +138,8 @@ void m_residue_2_2N_array(int length, uint32_t *M, uint32_t *Nr) {
 	//Nr initilized to 2 ** N-1
 }
 
-/*
-void mont_exp_array(int length, uint32_t *X, uint32_t E, uint32_t *M,
-		uint32_t *Nr, uint32_t *P, uint32_t *ONE, uint32_t *Z) {
+void mont_exp_array(int length, uint32_t *X, uint32_t *E, uint32_t *M,
+		uint32_t *Nr, uint32_t *P, uint32_t *ONE, uint32_t *temp, uint32_t *Z) {
 	//1.
 	//TODO implement calculating Nr = m_residue 2**(2N)
 	m_residue_2_2N_array(length, M, Nr);
@@ -148,10 +147,10 @@ void mont_exp_array(int length, uint32_t *X, uint32_t E, uint32_t *M,
 	//2.
 	zero_array(length, ONE);
 	ONE[length - 1] = 1;
-	mont_prod_array(length, ONE, Nr, M);
+	mont_prod_array(length, ONE, Nr, M, temp, Z);
 
 	//3
-	mont_prod_array(length, X, Nr, M);
+	mont_prod_array(length, X, Nr, M, temp, P);
 
 	//4
 	for (int word_index = length - 1; word_index > 0; word_index++) {
@@ -159,15 +158,15 @@ void mont_exp_array(int length, uint32_t *X, uint32_t E, uint32_t *M,
 			uint32_t ei = (E[word_index] >> i) & 1;
 			//6
 			if (ei == 1) {
-				mont_prod_array(length, Z, P, M, Z);
+				mont_prod_array(length, Z, P, M, temp, Z);
 			}
 			//5
-			mont_prod_array(length, P, P, M, P);
+			mont_prod_array(length, P, P, M, temp, P);
 			//7
 		}
 		//8
-		mont_prod_array(length, ONE, Z, M);
+		mont_prod_array(length, ONE, Z, M, temp, Z);
 		//9
 	}
 }
-*/
+

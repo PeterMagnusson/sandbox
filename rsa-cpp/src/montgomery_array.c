@@ -10,7 +10,7 @@ void copy_array(int length, uint32_t *src, uint32_t *dst) {
 void add_array(int length, uint32_t *a, uint32_t *b, uint32_t *result) {
 	uint32_t carry = 0;
 	for (int i = length - 1; i >= 0; i--) {
-		int r = carry;
+		uint32_t r = carry;
 		uint32_t aa = a[i];
 		uint32_t bb = b[i];
 		r += aa;
@@ -34,7 +34,7 @@ void sub_array(int length, uint32_t *a, uint32_t *b, uint32_t *result) {
 }
 
 void shift_right_1_array(int length, uint32_t *a, uint32_t *result) {
-	int prev = 0; // MSB will be zero extended
+	uint32_t prev = 0; // MSB will be zero extended
 	for (int wordIndex = 0; wordIndex < length; wordIndex++) {
 		uint32_t aa = a[wordIndex];
 		result[wordIndex] = (aa >> 1) | (prev << 31);
@@ -43,7 +43,7 @@ void shift_right_1_array(int length, uint32_t *a, uint32_t *result) {
 }
 
 void shift_left_1_array(int length, uint32_t *a, uint32_t *result) {
-	int prev = 0; // LSB will be zero extended
+	uint32_t prev = 0; // LSB will be zero extended
 	for (int wordIndex = length - 1; wordIndex >= 0; wordIndex--) {
 		uint32_t aa = a[wordIndex];
 		result[wordIndex] = (aa << 1) | prev;
@@ -63,12 +63,21 @@ void shift_left_1_array(int length, uint32_t *a, uint32_t *result) {
  }
  */
 
+void debugArray(char *msg, int length, uint32_t *array) {
+	printf("%s ", msg);
+	for(int i = 0; i < length; i++) {
+		printf("%8x ", array[i]);
+	}
+	printf("\n");
+}
+
 void modulus_array(int length, uint32_t *a, uint32_t *modulus, uint32_t *temp,
 		uint32_t *reminder) {
 
 	copy_array(length, a, temp); //long P = N;
 	copy_array(length, a, reminder); //long T = N;
 	while ((temp[0] & 0x80000000) == 0) { //while(P>=0) {
+		//debugArray("T= ", 3, temp);
 		copy_array(length, temp, reminder); //T = P;
 		sub_array(length, temp, modulus, temp); //P -= D;
 	}

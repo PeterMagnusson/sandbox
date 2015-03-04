@@ -66,15 +66,15 @@ void testSub() {
 	assertArrayEquals(3, expected4, cc);
 }
 
-int m_residue(int A, int M) {
+uint32_t m_residue(uint32_t A, uint32_t M) {
 	uint64_t x = A & 0xFFFFFFFFFL;
 	uint64_t m = M & 0xFFFFFFFFFL;
 	x <<= 32;
 	x %= m;
-	return (int) x;
+	return (uint32_t) x;
 }
 
-int test_montgomery_a_b_m(int A, int B, int M) {
+void test_montgomery_a_b_m(uint32_t A, uint32_t B, uint32_t M) {
 	//int prodMod = (A * B) % M;
 	uint32_t productModulus = A % M;
 	productModulus *= B % M;
@@ -93,7 +93,6 @@ int test_montgomery_a_b_m(int A, int B, int M) {
 	printf("%c A=%3x B=%3x M=%3x A*B=%3x Ar=%3x Br=%3x Ar*Br=%3x A*B=%3x\n",
 			success ? '*' : ' ', A, B, M, productModulus, Ar[0], Br[0], s[0],
 			productModulusMontgomery);
-	return success;
 }
 
 void test_montgomery_modulus() {

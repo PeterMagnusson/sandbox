@@ -74,6 +74,7 @@ void debugArray(char *msg, int length, uint32_t *array) {
 void modulus_array(int length, uint32_t *a, uint32_t *modulus, uint32_t *temp,
 		uint32_t *reminder) {
 
+	/*
 	copy_array(length, a, temp); //long P = N;
 	copy_array(length, a, reminder); //long T = N;
 	while ((temp[0] & 0x80000000) == 0) { //while(P>=0) {
@@ -82,23 +83,22 @@ void modulus_array(int length, uint32_t *a, uint32_t *modulus, uint32_t *temp,
 		sub_array(length, temp, modulus, temp); //P -= D;
 	}
 	//return T;
+    */
 
-	/*
 	 copy_array(length, a, reminder);
 
 	 while (!greater_than_array(length, modulus, reminder)) {
 
 	 copy_array(length, modulus, temp);
 
-	 while (temp[0] & 0x8000_0000 = 0 & !greater_than_array(length, temp, reminder)) {
-	 sub_array(length, a, temp );
-	 shift_left_1_array(length, tmp);
+	 while (((temp[0] & 0x80000000) == 0) && (!greater_than_array(length, temp, reminder))) {
+	 sub_array(length, reminder, temp, reminder );
+	 shift_left_1_array(length, temp, temp);
 	 }
 
-	 sub_array(length, reminder, tmp2, reminder);
+	 //sub_array(length, reminder, tmp2, reminder);
 
 	 }
-	 */
 }
 
 void zero_array(int length, uint32_t *a) {
@@ -106,11 +106,12 @@ void zero_array(int length, uint32_t *a) {
 		a[i] = 0;
 }
 
-//TODO verify if this method works
 int greater_than_array(int length, uint32_t *a, uint32_t *b) {
 	for (int i = 0; i < length; i++) {
 		if (a[i] > b[i])
 			return 1;
+		if (a[i] < b[i])
+			return 0;
 	}
 	return 0;
 }

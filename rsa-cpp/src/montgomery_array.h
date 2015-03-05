@@ -15,6 +15,6 @@ void mont_prod_array(int length, uint32_t *A, uint32_t *B, uint32_t *M,
 		uint32_t *temp, uint32_t *s);
 void modulus_array(int length, uint32_t *a, uint32_t *modulus, uint32_t *temp,
 		uint32_t *reminder);
-
+int greater_than_array(int length, uint32_t *a, uint32_t *b);
 
 #endif /* MONTGOMERY_ARRAY_H_ */

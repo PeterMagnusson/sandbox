@@ -163,11 +163,9 @@ void test_montgomery_one_item_array() {
 }
 
 void test_montgomery_modexp() {
-	printf("=== test_montgomery_modexp .^_^. ===\n");
+	printf("=== test_montgomery_modexp ===\n");
 	uint32_t X[] = { 0, (1 << (61 - 32)) - 1, 0xffffffff }; //2^61-1 Ivan Mikheevich Pervushin
-	printf("efwjklfewjklfew\n");
 	uint32_t M[] = { (1 << (89 - 64)) - 1, 0xffffffff, 0xffffffff }; //2^89-1 R. E. Powers
-	printf("jio\n");
 	uint32_t E[] = { 0, 0, (1 << 31) - 1 }; //Leonhard Euler
 
 	//temp variables
@@ -175,13 +173,16 @@ void test_montgomery_modexp() {
 	uint32_t ONE[] = { 0, 0, 0 };
 	uint32_t P[] = { 0, 0, 0 };
 	uint32_t temp[] = { 0, 0, 0 };
+	uint32_t temp2[] = { 0, 0, 0 };
 
 	//output
 	uint32_t Z[] = { 0, 0, 0 };
 
-	printf("........\n");
-	mont_exp_array(3, X, E, M, Nr, P, ONE, temp, Z);
-	printf("fewvw\n");
+	mont_exp_array(3, ONE, ONE, M, Nr, P, ONE, temp, temp2, Z);
+	assertArrayEquals(3, ONE, Z);
+
+
+	mont_exp_array(3, X, E, M, Nr, P, ONE, temp, temp2, Z);
 
 	uint32_t expected[] = { 0x0153db9b, 0x314b8066, 0x3462631f };
 	assertArrayEquals(3, expected, Z);

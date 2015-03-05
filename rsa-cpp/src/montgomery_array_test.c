@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "montgomery_array.h"
+#include "bignum_uint32_t.h"
 
 const uint32_t TEST_CONSTANT_PRIME_15_1 = 65537;
 const uint32_t TEST_CONSTANT_PRIME_31_1 = 2147483647u; // eighth Mersenne prime
@@ -97,6 +98,7 @@ void test_montgomery_a_b_m(uint32_t A, uint32_t B, uint32_t M) {
 
 void test_montgomery_modulus() {
 	printf("=== Test mod ===\n");
+	//printf("%lx\n", 2305843009213693951ul % 0x7ffffffful );
 	uint32_t A[] = { 0, (1 << (61 - 32)) - 1, 0xffffffff }; //2^61-1 Ivan Mikheevich Pervushin
 	uint32_t B[] = { (1 << (89 - 64)) - 1, 0xffffffff, 0xffffffff }; //2^89-1 R. E. Powers
 	uint32_t M[] = { 0, 0, (1 << 31) - 1 }; //Leonhard Euler
@@ -160,12 +162,40 @@ void test_montgomery_one_item_array() {
 			TEST_CONSTANT_PRIME_15_1);
 }
 
+void test_montgomery_modexp() {
+	printf("=== test_montgomery_modexp .^_^. ===\n");
+	uint32_t X[] = { 0, (1 << (61 - 32)) - 1, 0xffffffff }; //2^61-1 Ivan Mikheevich Pervushin
+	printf("efwjklfewjklfew\n");
+	uint32_t M[] = { (1 << (89 - 64)) - 1, 0xffffffff, 0xffffffff }; //2^89-1 R. E. Powers
+	printf("jio\n");
+	uint32_t E[] = { 0, 0, (1 << 31) - 1 }; //Leonhard Euler
+
+	//temp variables
+	uint32_t Nr[] = { 0, 0, 0 };
+	uint32_t ONE[] = { 0, 0, 0 };
+	uint32_t P[] = { 0, 0, 0 };
+	uint32_t temp[] = { 0, 0, 0 };
+
+	//output
+	uint32_t Z[] = { 0, 0, 0 };
+
+	printf("........\n");
+	mont_exp_array(3, X, E, M, Nr, P, ONE, temp, Z);
+	printf("fewvw\n");
+
+	uint32_t expected[] = { 0x0153db9b, 0x314b8066, 0x3462631f };
+	assertArrayEquals(3, expected, Z);
+
+
+
+}
+
 void montgomery_array_tests() {
+	test_montgomery_modexp();
 	testShiftRight();
 	testAdd();
 	testSub();
-	test_montgomery_modulus();
 	test_montgomery_one_item_array();
-
+	test_montgomery_modulus();
 }
 

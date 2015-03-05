@@ -126,7 +126,6 @@ public class MontgomeryArray {
 			a[i] = 0;
 	}
 
-	//FIXME this crappy methods fails sometimes. WHY?????
 	private static boolean greater_than_array(int length, int[] a, int[] b) {
 		for (int i = 0; i < length; i++) {
 			boolean toobig = (a[i] & 0x0FFFF_FFFFL) > (b[i] & 0x0FFFF_FFFFL);
@@ -136,4 +135,49 @@ public class MontgomeryArray {
 		}
 		return false;
 	}
+	
+	private static void m_residue_2_2N_array(int length, int[] M, int[] temp, int[] Nr) {
+		zero_array(length, Nr);
+		Nr[0] = 0x40000000; //Nr  = 2 ** N-2
+		modulus_array(length, Nr, M, Nr); //Nr = (2 ** N-2) mod M
+		int N = 32 * length;
+		for (int i = 0; i < (N) + 2; i++) {
+			shift_left_1_array(length, Nr, Nr);
+			modulus_array(length, Nr, M, Nr);
+		}
+		//Nr = (2 ** 2N) mod M
+	}
+
+	public static void mont_exp_array(int length, int[] X, int[] E, int[] M,
+			int[] Nr, int[] P, int[] ONE, int[] temp, int[] Z) {
+		//1.
+		//TODO implement calculating Nr = m_residue 2**(2N)
+		m_residue_2_2N_array(length, M, temp, Nr);
+
+		//2.
+		zero_array(length, ONE);
+		ONE[length - 1] = 1;
+		mont_prod_array(length, ONE, Nr, M, Z);
+
+		//3
+		mont_prod_array(length, X, Nr, M, P);
+
+		//4
+		for (int word_index = length - 1; word_index > 0; word_index--) {
+			for (int i = 0; i < 32; i++) {
+				int ei = (E[word_index] >> i) & 1;
+				//6
+				if (ei == 1) {
+					mont_prod_array(length, Z, P, M, Z);
+				}
+				//5
+				mont_prod_array(length, P, P, M, P);
+				//7
+			}
+			//8
+			mont_prod_array(length, ONE, Z, M, Z);
+			//9
+		}
+	}
+
 }

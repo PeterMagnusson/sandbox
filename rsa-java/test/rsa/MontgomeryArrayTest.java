@@ -151,4 +151,33 @@ public class MontgomeryArrayTest {
 				TEST_CONSTANT_PRIME_15_1);
 	}
 
+	@Test
+	public void test_montgomery_modexp() {
+		//printf("=== test_montgomery_modexp .^_^. ===\n");
+		int X[] = { 0, (1 << (61 - 32)) - 1, 0xffffffff }; //2^61-1 Ivan Mikheevich Pervushin
+		//printf("efwjklfewjklfew\n");
+		int M[] = { (1 << (89 - 64)) - 1, 0xffffffff, 0xffffffff }; //2^89-1 R. E. Powers
+		//printf("jio\n");
+		int E[] = { 0, 0, (1 << 31) - 1 }; //Leonhard Euler
+
+		//temp variables
+		int Nr[] = { 0, 0, 0 };
+		int ONE[] = { 0, 0, 0 };
+		int P[] = { 0, 0, 0 };
+		int temp[] = { 0, 0, 0 };
+
+		//output
+		int Z[] = { 0, 0, 0 };
+
+		//printf("........\n");
+		MontgomeryArray.mont_exp_array(3, X, E, M, Nr, P, ONE, temp, Z);
+		//printf("fewvw\n");
+
+		int expected[] = { 0x0153db9b, 0x314b8066, 0x3462631f };
+		assertArrayEquals(expected, Z);
+
+
+
+	}
+
 }

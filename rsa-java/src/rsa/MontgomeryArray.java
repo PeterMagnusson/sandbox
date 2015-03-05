@@ -58,7 +58,7 @@ public class MontgomeryArray {
 			int bb = ~b[wordIndex];
 			r += aa & 0xFFFFFFFFL;
 			r += bb & 0xFFFFFFFFL;
-			carry = ((int) (r>>32l)) & 1;
+			carry = (r>>32l) & 1;
 			result[wordIndex] = (int) r;
 		}
 	}
@@ -93,7 +93,7 @@ public class MontgomeryArray {
 
 	static void modulus_array(int length, int[] a, int[] modulus, int[] reminder) {
 		
-
+        /*
 		int temp[] = new int[length];
 		copy_array(length, a, temp); //long P = N;
 		copy_array(length, a, reminder); //long T = N;
@@ -101,24 +101,24 @@ public class MontgomeryArray {
 			//debugArray("T= ", 3, temp);
 			copy_array(length, temp, reminder); //T = P;
 			sub_array(length, temp, modulus, temp); //P -= D;
-		}
+		}*/
 
-//		int[] tmp = new int[length];
-//		int[] tmp2 = new int[length];
-//		copy_array(length, a, reminder);
-//
-//		while (!greater_than_array(length, modulus, reminder)) {
-//			copy_array(length, modulus, tmp);
-//			zero_array(length, tmp2);
-//
-//			while (!greater_than_array(length, tmp, reminder)) {
-//				copy_array(length, tmp, tmp2);
-//				shift_left_1_array(length, tmp, tmp);
-//			}
-//
-//			sub_array(length, reminder, tmp2, reminder);
-//
-//		}
+		int[] tmp = new int[length];
+		int[] tmp2 = new int[length];
+		copy_array(length, a, reminder);
+
+		while (!greater_than_array(length, modulus, reminder)) {
+			copy_array(length, modulus, tmp);
+			zero_array(length, tmp2);
+
+			while (!greater_than_array(length, tmp, reminder)) {
+				copy_array(length, tmp, tmp2);
+				shift_left_1_array(length, tmp, tmp);
+			}
+
+			sub_array(length, reminder, tmp2, reminder);
+
+		}
 	}
 
 	private static void zero_array(int length, int[] a) {

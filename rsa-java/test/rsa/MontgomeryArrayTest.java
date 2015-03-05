@@ -26,7 +26,7 @@ public class MontgomeryArrayTest {
 		int[] c = new int[2];
 		MontgomeryArray.add_array(2, a, b, c);
 		int[] expected = { 0x1323456a, 0x00abcdf0 };
-//		System.out.printf("%x %x %x\n", c[0], c[1], 0x0123456789abcdefL + 0x1200000277000001L);
+		System.out.printf("%x %x %x\n", c[0], c[1], 0x0123456789abcdefL + 0x1200000277000001L);
 		assertArrayEquals(expected, c);
 	}
 
@@ -37,7 +37,7 @@ public class MontgomeryArrayTest {
 		int[] c = new int[2];
 		MontgomeryArray.sub_array(2, a, b, c);
 		int[] expected = { 0x1034566, 0xffabbdee };
-//		System.out.printf("%x %x %x\n", c[0], c[1], 0x0123456789abcdefL - 0x002000008a001001L);
+		System.out.printf("%8x %8x %x\n", c[0], c[1], 0x0123456789abcdefL - 0x002000008a001001L);
 		assertArrayEquals(expected, c);
 	}
 	
@@ -70,7 +70,27 @@ public class MontgomeryArrayTest {
 		return success;
 	}
 
-	@Test public void modulus() {
+	@Test public void modulus2() {
+		int[] actual0 = new int[2];
+		int[] actual1 = new int[2];
+		int[] actual2 = new int[2];
+		int[] actual3 = new int[2];
+		int[] M = { 0, (1<<31)-1 }; //Leonhard Euler
+		int[] ZERO = { 0, 0 };
+		int[] ONE = { 0, 1 };
+		int[] X31 = { 0, (1<<31) }; //Leonhard Euler
+		MontgomeryArray.modulus_array(2, ZERO, M, actual0);		
+		MontgomeryArray.modulus_array(2, ONE, M, actual1);		
+		MontgomeryArray.modulus_array(2, M, M, actual2);
+		MontgomeryArray.modulus_array(2, X31, M, actual3);
+		assertArrayEquals(ZERO, actual0);
+		assertArrayEquals(ONE, actual1);
+		assertArrayEquals(ZERO, actual2);
+		assertArrayEquals(ONE, actual3);
+	}
+	
+	@Test public void modulus3() {
+
 		int[] A = { 0, (1<<(61-32)) - 1, 0xffff_ffff }; //2^61-1 Ivan Mikheevich Pervushin
 		int[] B = { (1<<(89-64)) - 1,  0xffff_ffff, 0xffff_ffff }; //2^89-1 R. E. Powers
 		int[] M = { 0, 0, (1<<31)-1 }; //Leonhard Euler
@@ -100,7 +120,6 @@ public class MontgomeryArrayTest {
 		MontgomeryArray.mont_prod_array(3, ONE, s, M, monProd);
 		System.out.printf("The solution: %8x %8x %8x\n", monProd[0], monProd[1], monProd[2]);
 	}
-		
 	
 	@Test
 	public void test_montgomery_one_item_array() {

@@ -100,9 +100,10 @@ public class MontgomeryArray {
 
 	public static void mont_exp_array(int length, int[] X, int[] E, int[] M,
 			int[] Nr, int[] P, int[] ONE, int[] temp, int[] Z) {
-
-		debugArray("M ", length, M);
+		debugArray("X ", length, X);
 		debugArray("E ", length, E);
+		debugArray("M ", length, M);
+
 		//int n = findN(length, E);
 		//int n = 32;
 		int n = 32 * length;
@@ -116,9 +117,11 @@ public class MontgomeryArray {
 		zero_array(length, ONE);
 		ONE[length - 1] = 1;
 		mont_prod_array(length, ONE, Nr, M, Z);
+		debugArray("Z0", length, Z);
 
 		// 3. P0 := MontProd( X, Nr, M );
 		mont_prod_array(length, X, Nr, M, P);
+		debugArray("P0", length, P);
 
 		// 4. for i = 0 to n-1 loop
 		for (int i = 0; i < n; i++) {

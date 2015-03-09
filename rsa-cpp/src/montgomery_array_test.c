@@ -187,9 +187,6 @@ void test_montgomery_modexp() {
 	mont_exp_array(3, X, E, M, Nr, P, ONE, temp, temp2, Z);
 	uint32_t expected[] = { 0x0153db9b, 0x314b8066, 0x3462631f };
 	assertArrayEquals(3, expected, Z);
-
-
-
 }
 
 void montgomery_array_tests() {

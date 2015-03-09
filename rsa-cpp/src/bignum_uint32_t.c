@@ -53,16 +53,6 @@ void shift_left_1_array(int length, uint32_t *a, uint32_t *result) {
 	}
 }
 
-/*
- void m_residue(int length, uint32_t *a, uint32_t *modulus, uint32_t *residue) {
- modulus_array(length, a, modulus, residue);
- for (int i = 0; i < 32; i++) {
- shift_left_1_array(length, residue, residue);
- modulus_array(length, residue, modulus, residue);
- }
- }
- */
-
 void debugArray(char *msg, int length, uint32_t *array) {
 	printf("%s ", msg);
 	for (int i = 0; i < length; i++) {
@@ -73,18 +63,6 @@ void debugArray(char *msg, int length, uint32_t *array) {
 
 void modulus_array(int length, uint32_t *a, uint32_t *modulus, uint32_t *temp,
 		uint32_t *reminder) {
-
-	/*
-	 copy_array(length, a, temp); //long P = N;
-	 copy_array(length, a, reminder); //long T = N;
-	 while ((temp[0] & 0x80000000) == 0) { //while(P>=0) {
-	 //debugArray("T= ", 3, temp);
-	 copy_array(length, temp, reminder); //T = P;
-	 sub_array(length, temp, modulus, temp); //P -= D;
-	 }
-	 //return T;
-	 */
-
 	copy_array(length, a, reminder);
 
 	while (!greater_than_array(length, modulus, reminder)) {
@@ -96,9 +74,6 @@ void modulus_array(int length, uint32_t *a, uint32_t *modulus, uint32_t *temp,
 			sub_array(length, reminder, temp, reminder);
 			shift_left_1_array(length, temp, temp);
 		}
-
-		//sub_array(length, reminder, tmp2, reminder);
-
 	}
 }
 

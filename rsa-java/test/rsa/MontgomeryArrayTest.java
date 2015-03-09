@@ -10,39 +10,6 @@ public class MontgomeryArrayTest {
 	static final int TEST_CONSTANT_PRIME_15_1 = 65537;
 	static final int TEST_CONSTANT_PRIME_31_1 = 2147483647; // eighth Mersenne prime
 
-	@Test
-	public void testShiftRight() {
-		int[] a = { 0x01234567, 0x89abcdef };
-		MontgomeryArray.shift_right_1_array(2, a, a);
-		MontgomeryArray.shift_right_1_array(2, a, a);
-		MontgomeryArray.shift_right_1_array(2, a, a);
-		MontgomeryArray.shift_right_1_array(2, a, a);
-		int[] expected = { 0x00123456, 0x789abcde };
-		assertArrayEquals(expected, a);
-	}
-
-	@Test
-	public void testAdd() {
-		int[] a = { 0x01234567, 0x89abcdef };
-		int[] b = { 0x12000002, 0x77000001 };
-		int[] c = new int[2];
-		MontgomeryArray.add_array(2, a, b, c);
-		int[] expected = { 0x1323456a, 0x00abcdf0 };
-		System.out.printf("%x %x %x\n", c[0], c[1], 0x0123456789abcdefL + 0x1200000277000001L);
-		assertArrayEquals(expected, c);
-	}
-
-	@Test
-	public void testSub() {
-		int[] a = { 0x01234567, 0x89abcdef };
-		int[] b = { 0x00200000, 0x8a001001 };
-		int[] c = new int[2];
-		MontgomeryArray.sub_array(2, a, b, c);
-		int[] expected = { 0x1034566, 0xffabbdee };
-		System.out.printf("%8x %8x %x\n", c[0], c[1], 0x0123456789abcdefL - 0x002000008a001001L);
-		assertArrayEquals(expected, c);
-	}
-	
 	int m_residue(int A, int M) {
 		long x = A & 0xFFFFFFFFFL;
 		long m = M & 0xFFFFFFFFFL;

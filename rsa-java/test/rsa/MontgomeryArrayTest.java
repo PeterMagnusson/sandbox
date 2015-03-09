@@ -2,6 +2,8 @@ package rsa;
 
 import static org.junit.Assert.*;
 
+import java.math.BigInteger;
+
 import org.junit.Test;
 
 public class MontgomeryArrayTest {
@@ -170,9 +172,15 @@ public class MontgomeryArrayTest {
 		int Z[] = { 0, 0, 0 };
 
 		//printf("........\n");
-		MontgomeryArray.mont_exp_array(3, X, E, M, Nr, P, ONE, temp, Z);
-		//printf("fewvw\n");
+		MontgomeryArray.mont_exp_array(3, ONE, ONE, M, Nr, P, ONE, temp, Z);
+		System.out.printf("%8x %8x %8x",Z[0], Z[1], Z[2]);
+		int expected0[] = { 0, 0, 1 };
+		assertArrayEquals(expected0, Z);
 
+		
+		
+		MontgomeryArray.mont_exp_array(3, X, E, M, Nr, P, ONE, temp, Z);
+		System.out.printf("%8x %8x %8x",Z[0], Z[1], Z[2]);
 		int expected[] = { 0x0153db9b, 0x314b8066, 0x3462631f };
 		assertArrayEquals(expected, Z);
 
@@ -180,4 +188,19 @@ public class MontgomeryArrayTest {
 
 	}
 
+	@Test
+	public void testMresidue() {
+		int[] M = { TEST_CONSTANT_PRIME_15_1 };
+		int[] temp = { 0 };
+		int[] Nr = { 0 };
+		int N = 3;
+		MontgomeryArray.m_residue_2_2N_array(1, N, M, temp, Nr);
+		BigInteger exponent = new BigInteger("" + (2 * N));
+		BigInteger modulus = new BigInteger("" + TEST_CONSTANT_PRIME_15_1);
+		BigInteger mresidue_biginteger = new BigInteger("2").modPow(exponent,
+				modulus);
+		String expected = mresidue_biginteger.toString(16);
+		String actual = Integer.toString(Nr[0], 16);
+		assertEquals(expected, actual);
+	}
 }

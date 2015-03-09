@@ -73,6 +73,18 @@ public class MontgomeryArray {
 		}
 	}
 
+	static int findN(int length, int[] E) {
+		int n = -1;
+		for (int i = 0; i < 32 * length; i++) {
+			int ei_ = E[length - 1 - (i / 32)];
+			int ei = (ei_ >> (i % 32)) & 1;
+			if (ei == 1) {
+				n = i;
+			}
+		}
+		return n + 1;
+	}
+	
 	public static void mont_exp_array(int length, int[] X, int[] E, int[] M,
 			int[] Nr, int[] P, int[] ONE, int[] temp, int[] Z) {
 		//debugArray("X ", length, X);
@@ -86,6 +98,7 @@ public class MontgomeryArray {
 		m_residue_2_2N_array(length, n, M, temp, Nr);
 		//debugArray("Nr", length, Nr);
 
+		
 		// 2. Z0 := MontProd( 1, Nr, M )
 		zero_array(length, ONE);
 		ONE[length - 1] = 1;
@@ -97,6 +110,7 @@ public class MontgomeryArray {
 		//debugArray("P0", length, P);
 
 		// 4. for i = 0 to n-1 loop
+		n = findN(length, E); //loop optimization for low values of E. Not necessary.
 		for (int i = 0; i < n; i++) {
 			int ei_ = E[length - 1 - (i / 32)];
 			int ei = (ei_ >> (i % 32)) & 1;

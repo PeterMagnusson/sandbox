@@ -9,6 +9,14 @@ public class BigNum {
 		System.out.println();
 	}
 	
+	static void debugArray(String s, int length, int[] array) {
+		System.out.printf(" debug %s => ", s);
+		for (int a : array) {
+			System.out.printf("%8x ", a);
+		}
+		System.out.println();
+	}
+	
 	static void copy_array(int length, int[] src, int[] dst) {
 		for (int i = 0; i < length; i++)
 			dst[i] = src[i];

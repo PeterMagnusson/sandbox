@@ -121,40 +121,87 @@ public class MontgomeryArrayTest {
 	}
 
 	@Test
-	public void test_montgomery_modexp() {
-		//printf("=== test_montgomery_modexp .^_^. ===\n");
-		int X[] = { 0, (1 << (61 - 32)) - 1, 0xffffffff }; //2^61-1 Ivan Mikheevich Pervushin
-		//printf("efwjklfewjklfew\n");
+	public void test_montgomery_modexp_one_one() {
 		int M[] = { (1 << (89 - 64)) - 1, 0xffffffff, 0xffffffff }; //2^89-1 R. E. Powers
-		//printf("jio\n");
-		int E[] = { 0, 0, (1 << 31) - 1 }; //Leonhard Euler
-
+		
 		//temp variables
 		int Nr[] = { 0, 0, 0 };
-		int ONE[] = { 0, 0, 0 };
+		int ONE[] = { 0, 0, 1 };
 		int P[] = { 0, 0, 0 };
 		int temp[] = { 0, 0, 0 };
 
 		//output
 		int Z[] = { 0, 0, 0 };
 
-		//printf("........\n");
 		MontgomeryArray.mont_exp_array(3, ONE, ONE, M, Nr, P, ONE, temp, Z);
-		System.out.printf("%8x %8x %8x",Z[0], Z[1], Z[2]);
+		System.out.printf("%8x %8x %8x\n",Z[0], Z[1], Z[2]);
 		int expected0[] = { 0, 0, 1 };
 		assertArrayEquals(expected0, Z);
-
-		
-		
-		MontgomeryArray.mont_exp_array(3, X, E, M, Nr, P, ONE, temp, Z);
-		System.out.printf("%8x %8x %8x",Z[0], Z[1], Z[2]);
-		int expected[] = { 0x0153db9b, 0x314b8066, 0x3462631f };
-		assertArrayEquals(expected, Z);
-
-
-
 	}
 
+	@Test
+	public void test_montgomery_modexp_primes() {
+		int X[] = { 0, (1 << (61 - 32)) - 1, 0xffffffff }; //2^61-1 Ivan Mikheevich Pervushin
+		int M[] = { (1 << (89 - 64)) - 1, 0xffffffff, 0xffffffff }; //2^89-1 R. E. Powers
+		int E[] = { 0, 0, (1 << 31) - 1 }; //Leonhard Euler
+
+		//temp variables
+		int Nr[] = { 0, 0, 0 };
+		int ONE[] = { 0, 0, 1 };
+		int P[] = { 0, 0, 0 };
+		int temp[] = { 0, 0, 0 };
+
+		//output
+		int Z[] = { 0, 0, 0 };
+
+		MontgomeryArray.mont_exp_array(3, X, E, M, Nr, P, ONE, temp, Z);
+		System.out.printf("%8x %8x %8x\n",Z[0], Z[1], Z[2]);
+		int expected[] = { 0x0153db9b, 0x314b8066, 0x3462631f };
+		assertArrayEquals(expected, Z);
+	}
+	
+	@Test
+	public void test_montgomery_modexp_5_9_23() {
+		int X[] = { 5 };
+		int E[] = { 9 };
+		int M[] = { 23 };
+
+		//temp variables
+		int Nr[] = { 0 };
+		int ONE[] = { 1 };
+		int P[] = { 0 };
+		int temp[] = { 0 };
+
+		//output
+		int Z[] = { 0 };
+
+		MontgomeryArray.mont_exp_array(1, X, E, M, Nr, P, ONE, temp, Z);
+		System.out.printf("%8x\n",Z[0]);
+		int expected[] = { 11 };
+		assertArrayEquals(expected, Z);
+	}
+	
+	@Test
+	public void test_montgomery_modexp_3_7_19() {
+		int X[] = { 3 };
+		int E[] = { 7 };
+		int M[] = { 19 };
+
+		//temp variables
+		int Nr[] = { 0 };
+		int ONE[] = { 1 };
+		int P[] = { 0 };
+		int temp[] = { 0 };
+
+		//output
+		int Z[] = { 0 };
+
+		MontgomeryArray.mont_exp_array(1, X, E, M, Nr, P, ONE, temp, Z);
+		System.out.printf("%8x\n",Z[0]);
+		int expected[] = { 2 };
+		assertArrayEquals(expected, Z);
+	}
+	
 	@Test
 	public void testMresidue() {
 		int[] M = { TEST_CONSTANT_PRIME_15_1 };
@@ -168,6 +215,6 @@ public class MontgomeryArrayTest {
 				modulus);
 		String expected = mresidue_biginteger.toString(16);
 		String actual = Integer.toString(Nr[0], 16);
-		assertEquals(expected, actual);
+		assertEquals("expected: " + expected + " actual: " + actual, expected, actual);
 	}
 }

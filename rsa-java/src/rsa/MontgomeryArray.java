@@ -85,13 +85,13 @@ public class MontgomeryArray {
 	}
 
 	private static int findN(int length, int[] E) {
-		for (int i = 0; i < length; i++) {
-			int e = E[i];
+		for (int wordcnt = 0; wordcnt < length; wordcnt++) {
+			int e = E[wordcnt];
 			if (e == 0)
 				continue;
-			for (int j = 31; i >= 0; j--) {
-				if (((e >> j) & 1) == 1) {
-					return j + 32 * (length - i - 1);
+			for (int bitcnt = 31; bitcnt >= 0; bitcnt--) {
+				if (((e >>> bitcnt) & 1) == 1) {
+					return 1 + bitcnt + 32 * (length - wordcnt - 1);
 				}
 			}
 		}
@@ -101,10 +101,16 @@ public class MontgomeryArray {
 	public static void mont_exp_array(int length, int[] X, int[] E, int[] M,
 			int[] Nr, int[] P, int[] ONE, int[] temp, int[] Z) {
 
-		int n = findN(length, E);
+		debugArray("M ", length, M);
+		debugArray("E ", length, E);
+		//int n = findN(length, E);
+		//int n = 32;
+		int n = 32 * length;
+		System.out.println("N: " + n);
 
 		// 1. Nr := 2 ** 2N mod M
 		m_residue_2_2N_array(length, n, M, temp, Nr);
+		debugArray("Nr", length, Nr);
 
 		// 2. Z0 := MontProd( 1, Nr, M )
 		zero_array(length, ONE);
@@ -122,15 +128,18 @@ public class MontgomeryArray {
 			if (ei == 1) {
 				mont_prod_array(length, Z, P, M, temp);
 				copy_array(length, temp, Z);
+				debugArray("Z ", length, Z);
 			}
 			// 5. Pi+1 := MontProd( Pi, Pi, M );
 			mont_prod_array(length, P, P, M, temp);
 			copy_array(length, temp, P);
+			debugArray("P ", length, P);
 
 		} // 7. end for
 			// 8. Zn := MontProd( 1, Zn, M );
 		mont_prod_array(length, ONE, Z, M, temp);
 		copy_array(length, temp, Z);
+		debugArray("Z ", length, Z);
 		// 9. RETURN Zn
 	}
 

@@ -35,6 +35,11 @@ public class GenerateNewTestCases {
 		generateWithShortE(4096);
 	}
 
+	@Test
+	public void generate8192ande65537() throws NoSuchAlgorithmException {
+		generateWithShortE(8192);
+	}
+
 	private void generate(int bitLength) {
 		System.out.println("---- " + bitLength + " ----");
 		int certainty = 1;

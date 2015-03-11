@@ -70,8 +70,8 @@ void mont_exp_array(int length, uint32_t *X, uint32_t *E, uint32_t *M,
 	//debugArray("M ", length, M);
 
 	// 1. Nr := 2 ** 2N mod M
-	int n = 32 * length;
-	m_residue_2_2N_array(length, n, M, temp, Nr);
+	const int N = 32 * length;
+	m_residue_2_2N_array(length, N, M, temp, Nr);
 	//debugArray("Nr", length, Nr);
 
 	// 2. Z0 := MontProd( 1, Nr, M )
@@ -85,7 +85,7 @@ void mont_exp_array(int length, uint32_t *X, uint32_t *E, uint32_t *M,
 	//debugArray("P0", length, P);
 
 	// 4. for i = 0 to n-1 loop
-	n = findN(length, E); //loop optimization for low values of E. Not necessary.
+	const int n = findN(length, E); //loop optimization for low values of E. Not necessary.
 	for (int i = 0; i < n; i++) {
 		uint32_t ei_ = E[length - 1 - (i / 32)];
 		uint32_t ei = (ei_ >> (i % 32)) & 1;

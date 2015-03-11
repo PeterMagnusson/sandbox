@@ -3,6 +3,7 @@ package rsa;
 import static org.junit.Assert.*;
 
 import java.math.BigInteger;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 import org.junit.Test;
@@ -29,6 +30,11 @@ public class GenerateNewTestCases {
 		generate(8192);
 	}
 
+	@Test
+	public void generate4096ande65537() throws NoSuchAlgorithmException {
+		generateWithShortE(4096);
+	}
+
 	private void generate(int bitLength) {
 		System.out.println("---- " + bitLength + " ----");
 		int certainty = 1;
@@ -38,6 +44,20 @@ public class GenerateNewTestCases {
 		BigInteger X = new BigInteger(bitLength, certainty, random);
 		print("int[] X = ", X);
 		BigInteger E = new BigInteger(bitLength, certainty, random);
+		print("int[] E = ", E);
+		BigInteger modExp = X.modPow(E, M);
+		print("int[] expected = ", modExp);
+	}
+
+	private void generateWithShortE(int bitLength) throws NoSuchAlgorithmException {
+		System.out.println("---- E=65537 " + bitLength + " ----");
+		int certainty = 1;
+		SecureRandom random = new SecureRandom();
+		BigInteger M = new BigInteger(bitLength, certainty, random);
+		print("int[] M = ", M);
+		BigInteger X = new BigInteger(bitLength, certainty, random);
+		print("int[] X = ", X);
+		BigInteger E = new BigInteger("65537");
 		print("int[] E = ", E);
 		BigInteger modExp = X.modPow(E, M);
 		print("int[] expected = ", modExp);

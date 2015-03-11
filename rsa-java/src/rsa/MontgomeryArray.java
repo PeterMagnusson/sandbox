@@ -108,10 +108,13 @@ public class MontgomeryArray {
 		int n = 32 * length;
 		//System.out.println("N: " + n);
 
+		PerformanceClock.updateThen();
+		
 		// 1. Nr := 2 ** 2N mod M
 		m_residue_2_2N_array(length, n, M, temp, Nr);
 		//debugArray("Nr", length, Nr);
 
+		PerformanceClock.debug("m_residue_2_2N_array");
 		
 		// 2. Z0 := MontProd( 1, Nr, M )
 		zero_array(length, ONE);
@@ -119,10 +122,14 @@ public class MontgomeryArray {
 		mont_prod_array(length, ONE, Nr, M, Z);
 		//debugArray("Z0", length, Z);
 
+		PerformanceClock.debug("1*Nr mod M");
+
 		// 3. P0 := MontProd( X, Nr, M );
 		mont_prod_array(length, X, Nr, M, P);
 		//debugArray("P0", length, P);
 
+		PerformanceClock.debug("X*Nr mod M");
+		
 		// 4. for i = 0 to n-1 loop
 		n = findN(length, E); //loop optimization
 		for (int i = 0; i < n; i++) {
@@ -140,11 +147,14 @@ public class MontgomeryArray {
 			//debugArray("P ", length, P);
 
 		} // 7. end for
+		PerformanceClock.debug("loop");
+
 			// 8. Zn := MontProd( 1, Zn, M );
 		mont_prod_array(length, ONE, Z, M, temp);
 		copy_array(length, temp, Z);
 		//debugArray("Z ", length, Z);
 		// 9. RETURN Zn
+		PerformanceClock.debug("1*Z mod M");
 	}
 
 }

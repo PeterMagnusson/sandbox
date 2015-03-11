@@ -1,6 +1,8 @@
 package rsa;
 import static rsa.BigNum.*;
 
+import java.util.Arrays;
+
 public class MontgomeryArray {
 	static void mont_prod_array(int length, int[] A, int B[], int M[], int[] s) {
 		if (A == s || B == s)
@@ -45,11 +47,23 @@ public class MontgomeryArray {
 	}
 
 	static void modulus_array(int length, int[] a, int[] modulus, int[] reminder) {
+//		int[] tmp = new int[length];
+//		copy_array(length, a, reminder);
+//		copy_array(length, a, tmp);
+//
+//		while((tmp[0] & 0x8000_0000) == 0) {
+//			System.out.printf("tmp:      %s\n", Arrays.toString(tmp));
+//			System.out.printf("reminder: %s\n", Arrays.toString(reminder));
+//			copy_array(length, tmp, reminder);
+//		    sub_array(length, tmp, modulus, tmp);
+//		}
+		
 		int[] tmp = new int[length];
 		int[] tmp2 = new int[length];
 		copy_array(length, a, reminder);
 
 		while (!greater_than_array(length, modulus, reminder)) {
+			sub_array(length, reminder, tmp2, reminder);			
 			copy_array(length, modulus, tmp);
 			zero_array(length, tmp2);
 
@@ -110,7 +124,7 @@ public class MontgomeryArray {
 		//debugArray("P0", length, P);
 
 		// 4. for i = 0 to n-1 loop
-		n = findN(length, E); //loop optimization for low values of E. Not necessary.
+		n = findN(length, E); //loop optimization
 		for (int i = 0; i < n; i++) {
 			int ei_ = E[length - 1 - (i / 32)];
 			int ei = (ei_ >> (i % 32)) & 1;

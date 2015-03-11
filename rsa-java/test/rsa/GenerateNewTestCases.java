@@ -24,17 +24,22 @@ public class GenerateNewTestCases {
 		generate(4096);
 	}
 
+	@Test
+	public void generate8192() {
+		generate(8192);
+	}
+
 	private void generate(int bitLength) {
 		System.out.println("---- " + bitLength + " ----");
-		int certainty = 12;
+		int certainty = 1;
 		SecureRandom random = new SecureRandom();
 		BigInteger M = new BigInteger(bitLength, certainty, random);
-		BigInteger X = new BigInteger(bitLength, certainty, random);
-		BigInteger E = new BigInteger(bitLength, certainty, random);
-		BigInteger modExp = X.modPow(E, M);
 		print("int[] M = ", M);
+		BigInteger X = new BigInteger(bitLength, certainty, random);
 		print("int[] X = ", X);
+		BigInteger E = new BigInteger(bitLength, certainty, random);
 		print("int[] E = ", E);
+		BigInteger modExp = X.modPow(E, M);
 		print("int[] expected = ", modExp);
 	}
 
